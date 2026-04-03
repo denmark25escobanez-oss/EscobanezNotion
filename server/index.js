@@ -17,7 +17,7 @@ app.use(express.static(buildPath));
 
 // The "Catch-All" for React Router - FIXING THE WILDCARD ERROR
 // Instead of '*', we use a regex that matches everything safely
-app.get(/^(?!\/api).+/, (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
 
