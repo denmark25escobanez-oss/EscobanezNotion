@@ -18,7 +18,7 @@ router.get("/todos", async (req, res) => {
 router.post("/todos", async (req, res) => {
     try {
         const collection = getCollection();
-        const { todo } = req.body; // Remove JSON.stringify(todo)
+        const { todo } = req.body; 
 
         if (!todo) {
             return res.status(400).json({ mssg: "Todo text is required" });
@@ -54,7 +54,6 @@ router.put("/todos/:id", async (req, res) => {
             return res.status(400).json({ mssg: "invalid status" });
         }
 
-        // Toggle the status
         const updatedTodo = await collection.updateOne(
             { _id }, 
             { $set: { status: !status } }
@@ -65,9 +64,8 @@ router.put("/todos/:id", async (req, res) => {
     }
 });
 
-// ADD THIS: Explicitly handle any stray requests to this router 
-// using the new compatible syntax to prevent the PathError
-router.get("(.*)", (req, res) => {
+// CATCH-ALL ROUTE (Corrected Syntax for Render/Node 22)
+router.get("/:path*", (req, res) => {
     res.status(404).json({ mssg: "API route not found" });
 });
 
