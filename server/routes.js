@@ -65,7 +65,7 @@ router.put("/todos/:id", async (req, res) => {
 });
 
 // CATCH-ALL ROUTE (Corrected Syntax for Render/Node 22)
-router.get("*", (req, res) => {
+router.get("/:catchAll(.*)", (req, res) => {
     res.status(404).json({ mssg: "API route not found" });
 });
 
