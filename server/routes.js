@@ -64,9 +64,5 @@ router.put("/todos/:id", async (req, res) => {
     }
 });
 
-// CATCH-ALL ROUTE (FIXED for Express 5 / Node 22)
-router.get("/*splat", (req, res) => {
-    res.status(404).json({ mssg: "API route not found" });
-});
 
 module.exports = router;

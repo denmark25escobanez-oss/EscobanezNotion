@@ -16,7 +16,7 @@ const buildPath = path.resolve(__dirname, "../client/dist");
 app.use(express.static(buildPath));
 
 // 3. Simple Catch-All
-app.get("*", (req, res) => {
+app.get("/*splat", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"), (err) => {
     if (err) {
       res.status(500).send(err);
