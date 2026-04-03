@@ -6,15 +6,19 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 
-
-app.use(express.static(path.join(__dirname, 'build')));
-
+// API Routes FIRST
 const router = require("./routes");
 app.use("/api", router);
 
+// Static files SECOND
+// Check if 'build' folder exists; if not, use current directory
+const buildPath = path.join(__dirname, 'build');
+app.use(express.static(buildPath));
 
-app.get("(.*)", (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// The "Catch-All" for React Router - FIXING THE WILDCARD ERROR
+// Instead of '*', we use a regex that matches everything safely
+app.get(/^(?!\/api).+/, (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 const port = process.env.PORT || 5000;
@@ -23,11 +27,10 @@ const startServer = async () => {
     try {
         await connectToMongoDB();
         app.listen(port, () => {
-            console.log(`Server is listening on port ${port}`);
+            console.log(`Server is running on port ${port}`);
         });
-    } catch (error) {
-        console.error("Failed to connect to MongoDB", error);
-        process.exit(1); // Exit if DB connection fails
+    } catch (err) {
+        console.error("DB Connection Error:", err);
     }
 };
 
